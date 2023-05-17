@@ -26,13 +26,13 @@ impl Plugin for MainMenuPlugin {
     }
 }
 
-#[derive(Clone, Copy, Default, Eq, PartialEq, Debug, Hash, States)]
-enum MenuState {
-    Main,
-    Settings,
-    #[default]
-    Disabled,
-}
+// #[derive(Clone, Copy, Default, Eq, PartialEq, Debug, Hash, States)]
+// enum MenuState {
+//     Main,
+//     Settings,
+//     #[default]
+//     Disabled,
+// }
 
 // pub mod settings;
 
@@ -47,88 +47,5 @@ enum MenuState {
 // }
 
 // fn main_menu_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-//     commands
-//         .spawn((
-//             NodeBundle {
-//                 style: Style {
-//                     size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
-//                     align_items: AlignItems::Center,
-//                     justify_content: JustifyContent::Center,
-//                     ..default()
-//                 },
-//                 ..default()
-//             },
-//             OnMainMenuScreen,
-//         ))
-//         .with_children(|parent| {
-//             parent
-//                 .spawn(NodeBundle {
-//                     style: Style {
-//                         flex_direction: FlexDirection::Column,
-//                         align_items: AlignItems::Center,
-//                         ..default()
-//                     },
-//                     background_color: Color::CRIMSON.into(),
-//                     ..default()
-//                 })
-//                 .with_children(|parent| {
-//                     parent.spawn(
-//                         TextBundle::from_section(
-//                             "Bevy Game", // global?
-//                             TextStyle {
-//                                 font: font.clone(),
-//                                 font_size: 80.0,
-//                                 color: TEXT_COLOR,
-//                             },
-//                         )
-//                         .with_style(Style {
-//                             margin: UiRect::all(Val::Px(50.0)),
-//                             ..default()
-//                         }),
-//                     );
-
-//                     parent
-//                         .spawn((
-//                             ButtonBundle {
-//                                 style: button_style.clone(),
-//                                 background_color: NORMAL_BUTTON.into(),
-//                                 ..default()
-//                             },
-//                             MenuButtonAction::Play,
-//                         ))
-//                         .with_children(|parent| {
-//                             parent.spawn(TextBundle::from_section(
-//                                 "New Game",
-//                                 button_text_style.clone(),
-//                             ));
-//                         });
-//                     parent
-//                         .spawn((
-//                             ButtonBundle {
-//                                 style: button_style.clone(),
-//                                 background_color: NORMAL_BUTTON.into(),
-//                                 ..default()
-//                             },
-//                             MenuButtonAction::Settings,
-//                         ))
-//                         .with_children(|parent| {
-//                             parent.spawn(TextBundle::from_section(
-//                                 "Settings",
-//                                 button_text_style.clone(),
-//                             ));
-//                         });
-//                     parent
-//                         .spawn((
-//                             ButtonBundle {
-//                                 style: button_style,
-//                                 background_color: NORMAL_BUTTON.into(),
-//                                 ..default()
-//                             },
-//                             MenuButtonAction::Quit,
-//                         ))
-//                         .with_children(|parent| {
-//                             parent.spawn(TextBundle::from_section("Quit", button_text_style));
-//                         });
-//                 });
-//         });
+//     
 // }

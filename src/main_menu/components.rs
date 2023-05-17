@@ -1,13 +1,22 @@
 use bevy::prelude::Component;
 
 #[derive(Component)]
-struct MainMenu {}
+pub struct MainMenu {}
 
 #[derive(Component)]
-struct SettingsMenu {}
+pub struct NewGameButton {}
 
 #[derive(Component)]
-struct SelectedOption {}
+pub struct SettingsButton {}
+
+#[derive(Component)]
+pub struct QuitButton {}
+
+// #[derive(Component)]
+// struct SettingsMenu {}
+
+// #[derive(Component)]
+// struct SelectedOption {}
 
 // #[derive(Component)]
 // enum MenuButtonAction {
