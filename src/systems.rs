@@ -8,15 +8,3 @@ pub fn setup_camera(mut commands: Commands, window_query: Query<&Window, With<Pr
         ..default()
     });
 }
-
-pub fn transition_to_game_state() {
-
-}
-
-pub fn transition_to_main_menu_state() {
-
-}
-
-pub fn exit_game() {
-    
-}

@@ -31,14 +31,10 @@ fn main() {
             ..default()
         }))
         .add_state::<GameState>()
+        .add_plugin(CursorPlugin)
         .add_plugin(MainMenuPlugin)
         .add_plugin(GamePlugin)
         //.add_plugin(GamePlugin)
         .add_startup_system(setup_camera)
-        //.insert_resource(Video::default())
-        //.insert_resource(Volume::default())
-        .add_startup_system(setup_cursor)
-        .add_system(move_cursor)
-        .add_system(update_icon)
         .run();
 }
