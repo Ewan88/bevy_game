@@ -17,7 +17,6 @@ pub fn spawn_player(
         window.height() / 2.0,
         0.0
     );
-    println!("spawning player");
     commands.spawn((
         SpriteBundle {
             transform: transform,
