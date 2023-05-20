@@ -20,7 +20,8 @@ impl Plugin for PlayerPlugin {
             .add_system(spawn_player.in_schedule(OnEnter(GameState::Game)))
             .add_systems(
                 (
-                    player_movement.in_set(MovementSystemSet),
+                    move_player.in_set(MovementSystemSet),
+                    update_player.in_set(MovementSystemSet),
                     confine_player_movement.in_set(ConfinementSystemSet),
                 )
                     .in_set(OnUpdate(GameState::Game))

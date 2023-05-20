@@ -3,7 +3,7 @@ use bevy::window::PrimaryWindow;
 
 use super::components::Player;
 
-pub const PLAYER_SPEED: f32 = 500.0;
+pub const PLAYER_SPEED: f32 = 100.0;
 pub const PLAYER_SIZE: f32 = 32.0;
 
 pub fn spawn_player(
@@ -12,18 +12,14 @@ pub fn spawn_player(
     asset_server: Res<AssetServer>,
 ) {
     let window = window_query.get_single().unwrap();
-    let transform = Transform::from_xyz(
-        window.width() / 2.0,
-        window.height() / 2.0,
-        0.0
-    );
+    let transform = Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0);
     commands.spawn((
         SpriteBundle {
             transform,
             texture: asset_server.load("sprites/player/player.png"),
             ..default()
         },
-        Player {},
+        Player { destination: None },
     ));
 }
 
@@ -33,32 +29,60 @@ pub fn despawn_player(mut commands: Commands, player_query: Query<Entity, With<P
     }
 }
 
-pub fn player_movement(
-    keyboard_input: Res<Input<KeyCode>>,
-    mut player_query: Query<&mut Transform, With<Player>>,
+pub fn move_player(
+    mouse_input: Res<Input<MouseButton>>,
+    mut player_query: Query<&mut Player>,
+    window: Query<&Window>,
+) {
+    if let Ok(mut player) = player_query.get_single_mut() {
+        let window: &Window = window.single();
+        if let Some(destination) = window.cursor_position() {
+            if mouse_input.pressed(MouseButton::Right) {
+                player.destination = Some(destination);
+            }
+        }
+    }
+}
+
+pub fn update_player(
+    mut transform_query: Query<&mut Transform, With<Player>>,
+    mut player_query: Query<&mut Player>,
     time: Res<Time>,
 ) {
-    if let Ok(mut transform) = player_query.get_single_mut() {
-        let mut direction = Vec3::ZERO;
+    if let Ok(mut transform) = transform_query.get_single_mut() {
+        if let Ok(player) = player_query.get_single_mut() {
+            match player.destination {
+                None => {
+                    // do nothing
+                }
+                Some(destination) => {
+                    let mut translation = transform.translation;
+                    let mut direction: Vec3 = Vec3 {
+                        x: transform.translation.x + destination.x,
+                        y: transform.translation.y + destination.y,
+                        z: 0.0,
+                    };
 
-        if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
-            direction += Vec3::new(-1.0, 0.0, 0.0);
-        }
-        if keyboard_input.pressed(KeyCode::Right) || keyboard_input.pressed(KeyCode::D) {
-            direction += Vec3::new(1.0, 0.0, 0.0);
-        }
-        if keyboard_input.pressed(KeyCode::Up) || keyboard_input.pressed(KeyCode::W) {
-            direction += Vec3::new(0.0, 1.0, 0.0);
-        }
-        if keyboard_input.pressed(KeyCode::Down) || keyboard_input.pressed(KeyCode::S) {
-            direction += Vec3::new(0.0, -1.0, 0.0);
-        }
+                    if direction.length() > 0.0 {
+                        direction = direction.normalize();
+                    }
 
-        if direction.length() > 0.0 {
-            direction = direction.normalize();
-        }
+                    if translation.x < destination.x {
+                        translation.x += direction.x * PLAYER_SPEED * time.delta_seconds();
+                    } else if translation.x > destination.x {
+                        translation.x -= direction.x * PLAYER_SPEED * time.delta_seconds();
+                    }
 
-        transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+                    if translation.y < destination.y {
+                        translation.y += direction.y * PLAYER_SPEED * time.delta_seconds();
+                    } else if translation.y > destination.y {
+                        translation.y -= direction.y * PLAYER_SPEED * time.delta_seconds();
+                    }
+
+                    transform.translation = translation;
+                }
+            }
+        }
     }
 }
 

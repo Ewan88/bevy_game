@@ -60,6 +60,7 @@ pub fn update_icon(
     }
 }
 
+#[allow(dead_code)]
 pub fn despawn_cursor(mut commands: Commands, cursor_query: Query<Entity, With<GameCursor>>) {
     if let Ok(cursor) = cursor_query.get_single() {
         commands.entity(cursor).despawn();
