@@ -34,7 +34,6 @@ fn main() {
         .add_plugin(CursorPlugin)
         .add_plugin(MainMenuPlugin)
         .add_plugin(GamePlugin)
-        //.add_plugin(GamePlugin)
         .add_startup_system(setup_camera)
         .run();
 }

@@ -12,15 +12,15 @@ use crate::game::PauseState;
 
 pub fn toggle_pause(
     keyboard_input: Res<Input<KeyCode>>,
-    simulation_state: Res<State<PauseState>>,
-    mut simulation_state_next_state: ResMut<NextState<PauseState>>,
+    pause_state: Res<State<PauseState>>,
+    mut next_state: ResMut<NextState<PauseState>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        if simulation_state.0 == PauseState::Running {
-            simulation_state_next_state.set(PauseState::Paused);
+        if pause_state.0 == PauseState::Running {
+            next_state.set(PauseState::Paused);
         }
-        if simulation_state.0 == PauseState::Paused {
-            simulation_state_next_state.set(PauseState::Running);
+        if pause_state.0 == PauseState::Paused {
+            next_state.set(PauseState::Running);
         }
     }
 }

@@ -30,7 +30,7 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                     align_items: AlignItems::Center,
                     ..default()
                 },
-                background_color: Color::CRIMSON.into(),
+                background_color: BACKGROUND.into(),
                 ..default()
             })
         .with_children(|parent| {

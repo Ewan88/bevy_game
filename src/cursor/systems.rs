@@ -11,11 +11,12 @@ pub fn setup_cursor_icons(mut commands: Commands, asset_server: Res<AssetServer>
 pub fn spawn_menu_cursor(
     mut windows: Query<&mut Window>,
     mut commands: Commands,
-    cursors: Res<Cursors>
+    cursors: Res<Cursors>,
 ) {
     let mut window: Mut<Window> = windows.single_mut();
     window.cursor.visible = false;
     let cursor_spawn: Vec3 = Vec3::ZERO;
+    //let cursor: Handle<Image> = cursors.point.clone().into();
 
     commands.spawn((
         ImageBundle {
@@ -48,7 +49,7 @@ pub fn move_cursor(window: Query<&Window>, mut cursor: Query<&mut Style, With<Ga
 pub fn update_icon(
     input: Res<Input<MouseButton>>,
     mut cursor_query: Query<&mut UiImage, With<GameCursor>>,
-    cursors: Res<Cursors>
+    cursors: Res<Cursors>,
 ) {
     if let Ok(mut cursor) = cursor_query.get_single_mut() {
         if input.pressed(MouseButton::Left) || input.pressed(MouseButton::Right) {
@@ -65,50 +66,42 @@ pub fn despawn_cursor(mut commands: Commands, cursor_query: Query<Entity, With<G
     }
 }
 
-// use bevy::prelude::*;
-// use bevy::render::camera::RenderTarget;
-
-// // ANCHOR: example
-// /// Used to help identify our main camera
-// #[derive(Component)]
-// struct MainCamera;
-
-// fn setup(mut commands: Commands) {
-//     commands.spawn((Camera2dBundle::default(), MainCamera));
-// }
-
-// fn my_cursor_system(
-//     // need to get window dimensions
-//     windows: Res<Windows>,
-//     // query to get camera transform
-//     camera_q: Query<(&Camera, &GlobalTransform), With<MainCamera>>,
+// pub fn spawn_ui_cursor(
+//     mut windows: Query<&mut Window>,
+//     mut commands: Commands,
+//     cursors: Res<Cursors>,
 // ) {
-//     // get the camera info and transform
-//     // assuming there is exactly one main camera entity, so query::single() is OK
-//     let (camera, camera_transform) = camera_q.single();
+//     let mut window: Mut<Window> = windows.single_mut();
+//     window.cursor.visible = false;
+//     let cursor_image: Handle<Image> = cursors.point.clone().into();
 
-//     // get the window that the camera is displaying to (or the primary window)
-//     let window = if let RenderTarget::Window(id) = camera.target {
-//         windows.get(id).unwrap()
-//     } else {
-//         windows.get_primary().unwrap()
-//     };
-
-//     // check if the cursor is inside the window and get its position
-//     // then, ask bevy to convert into world coordinates, and truncate to discard Z
-//     if let Some(world_position) = window.cursor_position()
-//         .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
-//         .map(|ray| ray.origin.truncate())
-//     {
-//         eprintln!("World coords: {}/{}", world_position.x, world_position.y);
-//     }
+//     commands.spawn(UiCursorBundle {
+//         cursor: UiCursor {
+//             image: cursor_image.clone(),
+//             size: vec2(288.0, 288.0),
+//         },
+//         ..default()
+//     });
 // }
-// // ANCHOR_END: example
 
-// fn main() {
-//     App::new()
-//         .add_plugins(DefaultPlugins)
-//         .add_startup_system(setup)
-//         .add_system(my_cursor_system)
-//         .run();
+// pub fn extract_ui_cursor(
+//     mut extracted_uinodes: ResMut<ExtractedUiNodes>,
+//     cursor_query: Extract<Query<(&GlobalTransform, &UiCursor)>>,
+// ) {
+//     for (transform, cursor) in cursor_query.iter() {
+//         extracted_uinodes.uinodes.push(ExtractedUiNode {
+//             stack_index: usize::MAX,
+//             transform: transform.compute_matrix(),
+//             color: Color::WHITE,
+//             rect: Rect {
+//                 min: Vec2::ZERO,
+//                 max: cursor.size,
+//             },
+//             image: cursor.image.clone_weak(),
+//             atlas_size: None,
+//             clip: None,
+//             flip_x: false,
+//             flip_y: false,
+//         });
+//     }
 // }

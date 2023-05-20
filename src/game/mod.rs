@@ -1,5 +1,6 @@
 mod player;
 mod systems;
+mod enemies;
 
 use crate::GameState;
 use ::bevy::prelude::*;

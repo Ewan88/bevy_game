@@ -19,7 +19,7 @@ pub fn spawn_player(
     );
     commands.spawn((
         SpriteBundle {
-            transform: transform,
+            transform,
             texture: asset_server.load("sprites/player/player.png"),
             ..default()
         },
