@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
-use super::components::Player;
+use super::components::*;
 
-pub const PLAYER_SPEED: f32 = 100.0;
+pub const PLAYER_SPEED: f32 = 200.0;
 pub const PLAYER_SIZE: f32 = 32.0;
 
 pub fn spawn_player(
@@ -30,15 +30,30 @@ pub fn despawn_player(mut commands: Commands, player_query: Query<Entity, With<P
 }
 
 pub fn move_player(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
     mouse_input: Res<Input<MouseButton>>,
     mut player_query: Query<&mut Player>,
     window: Query<&Window>,
+    icon_query: Query<Entity, With<MoveIcon>>,
 ) {
     if let Ok(mut player) = player_query.get_single_mut() {
         let window: &Window = window.single();
         if let Some(destination) = window.cursor_position() {
             if mouse_input.pressed(MouseButton::Right) {
                 player.destination = Some(destination);
+                if let Ok(move_icon) = icon_query.get_single() {
+                    commands.entity(move_icon).despawn();
+                }
+                commands.spawn((
+                    SpriteBundle {
+                        transform: Transform::from_xyz(destination.x, destination.y, 0.0),
+                        texture: asset_server.load("ui/move_marker.png"),
+                        ..default()
+                    },
+                    MoveIcon {},
+                ));
+                println!("{}", destination);
             }
         }
     }
@@ -48,6 +63,8 @@ pub fn update_player(
     mut transform_query: Query<&mut Transform, With<Player>>,
     mut player_query: Query<&mut Player>,
     time: Res<Time>,
+    mut commands: Commands,
+    icon_query: Query<Entity, With<MoveIcon>>,
 ) {
     if let Ok(mut transform) = transform_query.get_single_mut() {
         if let Ok(player) = player_query.get_single_mut() {
@@ -56,7 +73,19 @@ pub fn update_player(
                     // do nothing
                 }
                 Some(destination) => {
+                    let dest_x = destination.x.round();
+                    let dest_y = destination.y.round();
+
                     let mut translation = transform.translation;
+                    let trans_x = translation.x.round();
+                    let trans_y = translation.y.round();
+
+                    if let Ok(move_icon) = icon_query.get_single() {
+                        if trans_x == dest_x && trans_y == dest_y {
+                            commands.entity(move_icon).despawn();
+                        }
+                    }
+
                     let mut direction: Vec3 = Vec3 {
                         x: transform.translation.x + destination.x,
                         y: transform.translation.y + destination.y,
@@ -67,15 +96,15 @@ pub fn update_player(
                         direction = direction.normalize();
                     }
 
-                    if translation.x < destination.x {
+                    if trans_x < dest_x {
                         translation.x += direction.x * PLAYER_SPEED * time.delta_seconds();
-                    } else if translation.x > destination.x {
+                    } else if trans_x > dest_x {
                         translation.x -= direction.x * PLAYER_SPEED * time.delta_seconds();
                     }
 
-                    if translation.y < destination.y {
+                    if trans_y < dest_y {
                         translation.y += direction.y * PLAYER_SPEED * time.delta_seconds();
-                    } else if translation.y > destination.y {
+                    } else if trans_y > dest_y {
                         translation.y -= direction.y * PLAYER_SPEED * time.delta_seconds();
                     }
 
