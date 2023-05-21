@@ -53,7 +53,6 @@ pub fn move_player(
                     },
                     MoveIcon {},
                 ));
-                println!("{}", destination);
             }
         }
     }
@@ -67,48 +66,43 @@ pub fn update_player(
     icon_query: Query<Entity, With<MoveIcon>>,
 ) {
     if let Ok(mut transform) = transform_query.get_single_mut() {
-        if let Ok(player) = player_query.get_single_mut() {
+        if let Ok(mut player) = player_query.get_single_mut() {
             match player.destination {
                 None => {
                     // do nothing
                 }
                 Some(destination) => {
-                    let dest_x = destination.x.round();
-                    let dest_y = destination.y.round();
+                    let dest_x = destination.x;
+                    let dest_y = destination.y;
 
                     let mut translation = transform.translation;
-                    let trans_x = translation.x.round();
-                    let trans_y = translation.y.round();
+                    let trans_x = translation.x;
+                    let trans_y = translation.y;
 
                     if let Ok(move_icon) = icon_query.get_single() {
                         if trans_x == dest_x && trans_y == dest_y {
                             commands.entity(move_icon).despawn();
+                            player.destination = None;
                         }
                     }
 
-                    let mut direction: Vec3 = Vec3 {
-                        x: transform.translation.x + destination.x,
-                        y: transform.translation.y + destination.y,
-                        z: 0.0,
-                    };
+                    let direction = Vec3::new(dest_x - trans_x, dest_y - trans_y, 0.0);
+                    let distance = direction.length();
 
-                    if direction.length() > 0.0 {
-                        direction = direction.normalize();
+                    if distance > 0.0 {
+                        let speed = PLAYER_SPEED * time.delta_seconds();
+                        let movement = direction.normalize() * speed;
+
+                        if distance <= speed {
+                            translation.x = dest_x;
+                            translation.y = dest_y;
+                        } else {
+                            translation.x += movement.x;
+                            translation.y += movement.y;
+                        }
+
+                        transform.translation = translation;
                     }
-
-                    if trans_x < dest_x {
-                        translation.x += direction.x * PLAYER_SPEED * time.delta_seconds();
-                    } else if trans_x > dest_x {
-                        translation.x -= direction.x * PLAYER_SPEED * time.delta_seconds();
-                    }
-
-                    if trans_y < dest_y {
-                        translation.y += direction.y * PLAYER_SPEED * time.delta_seconds();
-                    } else if trans_y > dest_y {
-                        translation.y -= direction.y * PLAYER_SPEED * time.delta_seconds();
-                    }
-
-                    transform.translation = translation;
                 }
             }
         }

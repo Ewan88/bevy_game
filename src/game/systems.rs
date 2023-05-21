@@ -18,9 +18,11 @@ pub fn toggle_pause(
     if keyboard_input.just_pressed(KeyCode::Space) {
         if pause_state.0 == PauseState::Running {
             next_state.set(PauseState::Paused);
+            println!("game paused")
         }
         if pause_state.0 == PauseState::Paused {
             next_state.set(PauseState::Running);
+            println!("game resumed")
         }
     }
 }
