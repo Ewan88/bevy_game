@@ -3,7 +3,7 @@ use bevy::window::PrimaryWindow;
 
 use super::components::*;
 
-pub const PLAYER_SPEED: f32 = 200.0;
+pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
 pub const PLAYER_SIZE: f32 = 32.0;
 
 pub fn spawn_player(
@@ -35,24 +35,33 @@ pub fn move_player(
     mouse_input: Res<Input<MouseButton>>,
     mut player_query: Query<&mut Player>,
     window: Query<&Window>,
+    mut despawn: ResMut<DespawnSet>,
     icon_query: Query<Entity, With<MoveIcon>>,
+    transform_query: Query<&Transform, With<Player>>,
 ) {
     if let Ok(mut player) = player_query.get_single_mut() {
         let window: &Window = window.single();
         if let Some(destination) = window.cursor_position() {
             if mouse_input.pressed(MouseButton::Right) {
-                player.destination = Some(destination);
-                if let Ok(move_icon) = icon_query.get_single() {
-                    commands.entity(move_icon).despawn();
+                if let Ok(entity) = icon_query.get_single() {
+                    despawn.0.insert(entity);
                 }
-                commands.spawn((
-                    SpriteBundle {
-                        transform: Transform::from_xyz(destination.x, destination.y, 0.0),
-                        texture: asset_server.load("ui/move_marker.png"),
-                        ..default()
-                    },
-                    MoveIcon {},
-                ));
+                if let Ok(transform) = transform_query.get_single() {
+                    if transform.translation.x != destination.x
+                        || transform.translation.y != destination.y
+                    {
+                        commands.spawn((
+                            SpriteBundle {
+                                transform: Transform::from_xyz(destination.x, destination.y, 0.0),
+                                texture: asset_server.load("ui/move_marker.png"),
+                                ..default()
+                            },
+                            MoveIcon {},
+                        ));
+
+                        player.destination = Some(destination);
+                    }
+                }
             }
         }
     }
@@ -62,15 +71,13 @@ pub fn update_player(
     mut transform_query: Query<&mut Transform, With<Player>>,
     mut player_query: Query<&mut Player>,
     time: Res<Time>,
-    mut commands: Commands,
+    mut despawn: ResMut<DespawnSet>,
     icon_query: Query<Entity, With<MoveIcon>>,
 ) {
     if let Ok(mut transform) = transform_query.get_single_mut() {
         if let Ok(mut player) = player_query.get_single_mut() {
             match player.destination {
-                None => {
-                    // do nothing
-                }
+                None => {}
                 Some(destination) => {
                     let dest_x = destination.x;
                     let dest_y = destination.y;
@@ -79,11 +86,11 @@ pub fn update_player(
                     let trans_x = translation.x;
                     let trans_y = translation.y;
 
-                    if let Ok(move_icon) = icon_query.get_single() {
-                        if trans_x == dest_x && trans_y == dest_y {
-                            commands.entity(move_icon).despawn();
-                            player.destination = None;
+                    if trans_x == dest_x && trans_y == dest_y {
+                        if let Ok(entity) = icon_query.get_single() {
+                            despawn.0.insert(entity);
                         }
+                        player.destination = None;
                     }
 
                     let direction = Vec3::new(dest_x - trans_x, dest_y - trans_y, 0.0);
