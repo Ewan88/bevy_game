@@ -23,28 +23,30 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
             MainMenu {},
         ))
         .with_children(|parent| {
-            parent.spawn(NodeBundle {
-                style: Style {
-                    // BACKGROUND
-                    flex_direction: FlexDirection::Column,
-                    align_items: AlignItems::Center,
-                    ..default()
-                },
-                background_color: BACKGROUND.into(),
-                ..default()
-            })
-        .with_children(|parent| {
-                parent.spawn(
-                    TextBundle::from_section(
-                        "Bevy Game", // global?
-                        get_title_text_style(asset_server),
-                    )
-                    .with_style(Style {
-                        margin: UiRect::all(Val::Px(50.0)),
+            parent
+                .spawn(NodeBundle {
+                    style: Style {
+                        // BACKGROUND
+                        flex_direction: FlexDirection::Column,
+                        align_items: AlignItems::Center,
                         ..default()
-                    }),
-                );
-                parent.spawn((
+                    },
+                    background_color: BACKGROUND.into(),
+                    ..default()
+                })
+                .with_children(|parent| {
+                    parent.spawn(
+                        TextBundle::from_section(
+                            "Bevy Game", // global?
+                            get_title_text_style(asset_server),
+                        )
+                        .with_style(Style {
+                            margin: UiRect::all(Val::Px(50.0)),
+                            ..default()
+                        }),
+                    );
+                    parent
+                        .spawn((
                             ButtonBundle {
                                 style: BUTTON_STYLE,
                                 background_color: NORMAL_BUTTON.into(),
@@ -58,7 +60,8 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                                 get_button_text_style(asset_server),
                             ));
                         });
-                    parent.spawn((
+                    parent
+                        .spawn((
                             ButtonBundle {
                                 style: BUTTON_STYLE,
                                 background_color: NORMAL_BUTTON.into(),
@@ -72,7 +75,8 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                                 get_button_text_style(asset_server),
                             ));
                         });
-                    parent.spawn((
+                    parent
+                        .spawn((
                             ButtonBundle {
                                 style: BUTTON_STYLE,
                                 background_color: NORMAL_BUTTON.into(),
@@ -81,14 +85,13 @@ pub fn build_main_menu(commands: &mut Commands, asset_server: &Res<AssetServer>)
                             QuitButton {},
                         ))
                         .with_children(|parent| {
-                            parent.spawn(
-                                TextBundle::from_section(
-                                    "Quit", 
-                                    get_button_text_style(asset_server)
-                                ));
+                            parent.spawn(TextBundle::from_section(
+                                "Quit",
+                                get_button_text_style(asset_server),
+                            ));
                         });
                 });
-            })
+        })
         .id();
     main_menu_entity
 }

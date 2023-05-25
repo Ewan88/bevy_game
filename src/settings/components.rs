@@ -32,10 +32,10 @@ pub struct Settings {
 
 impl Default for Settings {
     fn default() -> Self {
-        Settings { 
+        Settings {
             full_screen: false,
             sound_volume: 100,
-            music_volume: 100
+            music_volume: 100,
         }
     }
 }

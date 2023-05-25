@@ -20,7 +20,7 @@ impl Plugin for MainMenuPlugin {
                     interact_with_quit_button,
                     interact_with_settings_button,
                 )
-                .in_set(OnUpdate(GameState::MainMenu)),
+                    .in_set(OnUpdate(GameState::MainMenu)),
             )
             .add_system(despawn_main_menu.in_schedule(OnExit(GameState::MainMenu)));
     }
@@ -47,5 +47,5 @@ impl Plugin for MainMenuPlugin {
 // }
 
 // fn main_menu_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-//     
+//
 // }

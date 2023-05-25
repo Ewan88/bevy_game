@@ -1,13 +1,12 @@
+mod enemies;
 mod player;
 mod systems;
-mod enemies;
 mod ui;
 
 use crate::GameState;
 use ::bevy::prelude::*;
 use player::PlayerPlugin;
 use systems::*;
-
 
 pub struct GamePlugin;
 

@@ -1,5 +1,5 @@
-pub mod systems;
 pub mod components;
+pub mod systems;
 
 // use bevy::prelude::*;
 // use crate::game_state::Volume;
