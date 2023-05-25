@@ -3,8 +3,8 @@ use bevy::prelude::*;
 
 pub fn setup_cursor_icons(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.insert_resource(Cursors {
-        point: asset_server.load("cursors/point.png").into(),
-        click: asset_server.load("cursors/click.png").into(),
+        point: asset_server.load("cursors/point.png"),
+        click: asset_server.load("cursors/click.png"),
     });
 }
 
