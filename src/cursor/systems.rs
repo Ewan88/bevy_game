@@ -1,7 +1,10 @@
 use super::components::*;
 use bevy::prelude::*;
 
-pub fn setup_cursor_icons(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn setup_cursor_icons(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+) {
     commands.insert_resource(Cursors {
         point: asset_server.load("cursors/point.png"),
         click: asset_server.load("cursors/click.png"),
@@ -36,7 +39,10 @@ pub fn spawn_menu_cursor(
     ));
 }
 
-pub fn move_cursor(window: Query<&Window>, mut cursor: Query<&mut Style, With<GameCursor>>) {
+pub fn move_cursor(
+    window: Query<&Window>,
+    mut cursor: Query<&mut Style, With<GameCursor>>,
+) {
     let window: &Window = window.single();
     if let Some(position) = window.cursor_position() {
         if let Ok(mut style) = cursor.get_single_mut() {
@@ -52,7 +58,8 @@ pub fn update_icon(
     cursors: Res<Cursors>,
 ) {
     if let Ok(mut cursor) = cursor_query.get_single_mut() {
-        if input.pressed(MouseButton::Left) || input.pressed(MouseButton::Right) {
+        if input.pressed(MouseButton::Left) || input.pressed(MouseButton::Right)
+        {
             cursor.texture = cursors.click.clone();
         } else {
             cursor.texture = cursors.point.clone();
@@ -61,7 +68,10 @@ pub fn update_icon(
 }
 
 #[allow(dead_code)]
-pub fn despawn_cursor(mut commands: Commands, cursor_query: Query<Entity, With<GameCursor>>) {
+pub fn despawn_cursor(
+    mut commands: Commands,
+    cursor_query: Query<Entity, With<GameCursor>>,
+) {
     if let Ok(cursor) = cursor_query.get_single() {
         commands.entity(cursor).despawn();
     }

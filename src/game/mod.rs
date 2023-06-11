@@ -1,4 +1,5 @@
 mod enemies;
+mod map;
 mod player;
 mod systems;
 mod ui;

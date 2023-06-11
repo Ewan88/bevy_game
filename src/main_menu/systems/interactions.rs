@@ -14,7 +14,9 @@ pub fn interact_with_new_game_button(
     asset_server: Res<AssetServer>,
     audio: Res<Audio>,
 ) {
-    if let Ok((interaction, mut background_color)) = button_query.get_single_mut() {
+    if let Ok((interaction, mut background_color)) =
+        button_query.get_single_mut()
+    {
         match *interaction {
             Interaction::Clicked => {
                 *background_color = PRESSED_BUTTON.into();
@@ -40,7 +42,9 @@ pub fn interact_with_settings_button(
     asset_server: Res<AssetServer>,
     audio: Res<Audio>,
 ) {
-    if let Ok((interaction, mut background_color)) = button_query.get_single_mut() {
+    if let Ok((interaction, mut background_color)) =
+        button_query.get_single_mut()
+    {
         match *interaction {
             Interaction::Clicked => {
                 *background_color = PRESSED_BUTTON.into();
@@ -67,7 +71,9 @@ pub fn interact_with_quit_button(
     asset_server: Res<AssetServer>,
     audio: Res<Audio>,
 ) {
-    if let Ok((interaction, mut background_color)) = button_query.get_single_mut() {
+    if let Ok((interaction, mut background_color)) =
+        button_query.get_single_mut()
+    {
         match *interaction {
             Interaction::Clicked => {
                 *background_color = PRESSED_BUTTON.into();

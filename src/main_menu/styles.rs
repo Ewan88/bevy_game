@@ -10,14 +10,19 @@ use bevy::prelude::*;
 // LIGHT_GREEN_3: Color = Color::rgb_u8(190, 220, 127);
 // LIGHT_GREEN_4: Color = Color::rgb_u8(238, 255, 204);
 
-const TEXT_COLOR: Color = Color::rgb(190.0 / 255.0, 220.0 / 255.0, 127.0 / 255.0);
+const TEXT_COLOR: Color =
+    Color::rgb(190.0 / 255.0, 220.0 / 255.0, 127.0 / 255.0);
 const FONT_PATH: &str = "fonts/RubikMaze-Regular.ttf";
 
-pub const NORMAL_BUTTON: Color = Color::rgb(17.0 / 255.0, 35.0 / 255.0, 24.0 / 255.0);
-pub const HOVERED_BUTTON: Color = Color::rgb(48.0 / 255.0, 93.0 / 255.0, 66.0 / 255.0);
-pub const PRESSED_BUTTON: Color = Color::rgb(77.0 / 255.0, 128.0 / 255.0, 97.0 / 255.0);
+pub const NORMAL_BUTTON: Color =
+    Color::rgb(17.0 / 255.0, 35.0 / 255.0, 24.0 / 255.0);
+pub const HOVERED_BUTTON: Color =
+    Color::rgb(48.0 / 255.0, 93.0 / 255.0, 66.0 / 255.0);
+pub const PRESSED_BUTTON: Color =
+    Color::rgb(77.0 / 255.0, 128.0 / 255.0, 97.0 / 255.0);
 
-pub const BACKGROUND: Color = Color::rgb(4.0 / 255.0, 12.0 / 255.0, 6.0 / 255.0);
+pub const BACKGROUND: Color =
+    Color::rgb(4.0 / 255.0, 12.0 / 255.0, 6.0 / 255.0);
 
 pub const MAIN_MENU_STYLE: Style = Style {
     size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),

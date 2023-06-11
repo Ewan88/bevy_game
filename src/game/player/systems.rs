@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 use super::components::*;
+use super::resources::*;
 
 pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
 pub const PLAYER_SIZE: f32 = 32.0;
@@ -12,7 +13,8 @@ pub fn spawn_player(
     asset_server: Res<AssetServer>,
 ) {
     let window = window_query.get_single().unwrap();
-    let transform = Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0);
+    let transform =
+        Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0);
     commands.spawn((
         SpriteBundle {
             transform,
@@ -23,7 +25,10 @@ pub fn spawn_player(
     ));
 }
 
-pub fn despawn_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
+pub fn despawn_player(
+    mut commands: Commands,
+    player_query: Query<Entity, With<Player>>,
+) {
     if let Ok(player_entity) = player_query.get_single() {
         commands.entity(player_entity).despawn();
     }
@@ -52,8 +57,13 @@ pub fn move_player(
                     {
                         commands.spawn((
                             SpriteBundle {
-                                transform: Transform::from_xyz(destination.x, destination.y, 0.0),
-                                texture: asset_server.load("ui/move_marker.png"),
+                                transform: Transform::from_xyz(
+                                    destination.x,
+                                    destination.y,
+                                    0.0,
+                                ),
+                                texture: asset_server
+                                    .load("ui/move_marker.png"),
                                 ..default()
                             },
                             MoveIcon {},
@@ -93,7 +103,8 @@ pub fn update_player(
                         player.destination = None;
                     }
 
-                    let direction = Vec3::new(dest_x - trans_x, dest_y - trans_y, 0.0);
+                    let direction =
+                        Vec3::new(dest_x - trans_x, dest_y - trans_y, 0.0);
                     let distance = direction.length();
 
                     if distance > 0.0 {

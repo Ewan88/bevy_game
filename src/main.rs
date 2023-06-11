@@ -22,10 +22,12 @@ pub enum GameState {
 
 fn main() {
     App::new()
+        .insert_resource(ClearColor(Color::BLACK))
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
+                title: "Game!".to_string(),
                 mode: WindowMode::Windowed,
-                //resolution: WindowResolution::new(800.0, 600.0),
+                resolution: WindowResolution::new(1280.0, 700.0),
                 ..default()
             }),
             ..default()

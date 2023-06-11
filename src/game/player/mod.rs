@@ -1,10 +1,11 @@
 mod components;
+mod resources;
 mod systems;
 use crate::GameState;
 use bevy::prelude::*;
 use systems::*;
 
-use self::components::DespawnSet;
+use crate::game::player::resources::DespawnSet;
 
 use super::PauseState;
 

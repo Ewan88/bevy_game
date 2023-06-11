@@ -1,9 +1,11 @@
-### Credits:
+# Game
 
-_Fonts:_
-Rubik Filtered - https://github.com/NaN-xyz/Rubik-Filtered
+## Project Overview
 
-_Icons:_
-https://game-icons.net/
+## Story
 
-_3rd Party Libraries_:
+## Game Loop
+
+## MVP
+
+## Stretch Goals
