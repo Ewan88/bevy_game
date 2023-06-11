@@ -1,4 +1,4 @@
-use bevy::{prelude::*, window::PrimaryWindow};
+use crate::prelude::*;
 
 pub fn setup_camera(
     mut commands: Commands,

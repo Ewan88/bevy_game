@@ -1,13 +1,10 @@
 mod components;
 mod resources;
 mod systems;
-use crate::GameState;
-use bevy::prelude::*;
 use systems::*;
 
-use crate::game::player::resources::DespawnSet;
-
-use super::PauseState;
+use self::resources::DespawnSet;
+use crate::prelude::*;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub struct MovementSystemSet;

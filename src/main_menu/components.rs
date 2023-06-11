@@ -1,4 +1,4 @@
-use bevy::prelude::Component;
+use crate::prelude::*;
 
 #[derive(Component)]
 pub struct MainMenu {}

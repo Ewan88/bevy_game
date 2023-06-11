@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use crate::prelude::*;
 
 // DARK_GREEN_1: Color = Color::rgb_u8(4, 12, 6);
 // DARK_GREEN_2: Color = Color::rgb_u8(17, 35, 24);

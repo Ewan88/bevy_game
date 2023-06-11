@@ -4,10 +4,10 @@ mod player;
 mod systems;
 mod ui;
 
-use crate::GameState;
-use ::bevy::prelude::*;
-use player::PlayerPlugin;
+use crate::prelude::*;
 use systems::*;
+
+use self::player::*;
 
 pub struct GamePlugin;
 

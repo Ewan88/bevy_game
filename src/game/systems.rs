@@ -1,6 +1,4 @@
-use bevy::prelude::*;
-
-use crate::game::PauseState;
+use crate::prelude::*;
 
 // pub fn pause_game(mut simulation_state_next_state: ResMut<NextState<PauseState>>) {
 //     simulation_state_next_state.set(PauseState::Paused);

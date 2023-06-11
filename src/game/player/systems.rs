@@ -1,5 +1,4 @@
-use bevy::prelude::*;
-use bevy::window::PrimaryWindow;
+use crate::prelude::*;
 
 use super::components::*;
 use super::resources::*;

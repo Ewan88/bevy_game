@@ -1,9 +1,7 @@
-use bevy::app::AppExit;
-use bevy::prelude::*;
-
 use crate::main_menu::components::*;
-use crate::main_menu::styles::{HOVERED_BUTTON, NORMAL_BUTTON, PRESSED_BUTTON};
-use crate::GameState;
+use crate::main_menu::styles::*;
+use crate::prelude::*;
+use bevy::app::*;
 
 pub fn interact_with_new_game_button(
     mut button_query: Query<
