@@ -9,6 +9,7 @@ pub struct MapBuilder {
     pub player_start: Vec2,
 }
 
+#[allow(dead_code)]
 impl MapBuilder {
     pub fn new(width: i32, height: i32) -> Self {
         let mut mb: MapBuilder = Self {

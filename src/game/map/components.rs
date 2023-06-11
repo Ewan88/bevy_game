@@ -2,6 +2,7 @@
 // we can change this later by passing in a map size
 pub const NUM_TILES: usize = 0;
 
+#[allow(dead_code)]
 #[derive(Copy, Clone, PartialEq)]
 pub enum TileType {
     Wall,

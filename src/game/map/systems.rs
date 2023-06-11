@@ -1,11 +1,10 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
-use super::components::*;
-
+#[allow(dead_code)]
 pub fn build_map() {}
 
-// call spawn map to draw
+#[allow(dead_code, unused_variables, unused_mut)]
 pub fn spawn_map(
     mut commands: Commands,
     window_query: Query<&Window, With<PrimaryWindow>>,
