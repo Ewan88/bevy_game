@@ -1,22 +1,10 @@
-// define height and width as screen size
-// we can change this later by passing in a map size
-pub const NUM_TILES: usize = 0;
+use crate::prelude::*;
 
-#[allow(dead_code)]
-#[derive(Copy, Clone, PartialEq)]
-pub enum TileType {
-    Wall,
-    Floor,
-}
+#[derive(Component)]
+pub struct Tile();
 
-pub struct Map {
-    pub tiles: Vec<TileType>,
-}
-
-impl Map {
-    pub fn new() -> Self {
-        Self {
-            tiles: vec![TileType::Floor; NUM_TILES],
-        }
-    }
+#[derive(Resource)]
+pub struct TileTypes {
+    pub grass: Handle<Image>,
+    pub wall: Handle<Image>,
 }

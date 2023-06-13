@@ -8,8 +8,11 @@ mod settings;
 mod prelude {
     pub use bevy::prelude::*;
     pub use bevy::window::*;
-    pub const SCREEN_WIDTH: f32 = 80.0 * 32.0;
-    pub const SCREEN_HEIGHT: f32 = 50.0 * 32.0;
+    pub const TILE_SIZE: f32 = 32.0;
+    pub const X_TILES: f32 = 80.0;
+    pub const Y_TILES: f32 = 50.0;
+    pub const SCREEN_WIDTH: f32 = X_TILES * TILE_SIZE;
+    pub const SCREEN_HEIGHT: f32 = Y_TILES * TILE_SIZE;
     pub const DISPLAY_WIDTH: f32 = SCREEN_WIDTH / 2.0;
     pub const DISPLAY_HEIGHT: f32 = SCREEN_HEIGHT / 2.0;
     pub use crate::camera::*;
@@ -25,7 +28,6 @@ use prelude::*;
 
 fn main() {
     App::new()
-        .insert_resource(ClearColor(Color::BLACK))
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Game!".to_string(),

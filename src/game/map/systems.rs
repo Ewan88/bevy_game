@@ -1,14 +1,29 @@
-use bevy::prelude::*;
-use bevy::window::PrimaryWindow;
+use super::components::*;
+use crate::prelude::*;
 
-#[allow(dead_code)]
-pub fn build_map() {}
+pub fn spawn_map(mut commands: Commands, tiles: Res<TileTypes>) {
+    for y in 0..X_TILES as i32 {
+        for x in 0..Y_TILES as i32 {
+            let transform = Transform::from_xyz(
+                x as f32 * TILE_SIZE,
+                y as f32 * TILE_SIZE,
+                0.0,
+            );
+            commands.spawn(SpriteBundle {
+                transform,
+                texture: tiles.grass.clone(),
+                ..default()
+            });
+        }
+    }
+}
 
-#[allow(dead_code, unused_variables, unused_mut)]
-pub fn spawn_map(
+pub fn setup_tile_icons(
     mut commands: Commands,
-    window_query: Query<&Window, With<PrimaryWindow>>,
     asset_server: Res<AssetServer>,
 ) {
-    let window = window_query.get_single().unwrap();
+    commands.insert_resource(TileTypes {
+        grass: asset_server.load("sprites/terrain/grass.png"),
+        wall: asset_server.load("sprites/terrain/wall.png"),
+    });
 }
