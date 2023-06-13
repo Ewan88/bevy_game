@@ -13,13 +13,14 @@ pub fn spawn_player(
 ) {
     let window = window_query.get_single().unwrap();
     let transform =
-        Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0);
+        Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 1.0);
     commands.spawn((
         SpriteBundle {
             transform,
             texture: asset_server.load("sprites/player/player.png"),
             ..default()
         },
+        RenderLayers::layer(1),
         Player { destination: None },
     ));
 }
@@ -59,12 +60,13 @@ pub fn move_player(
                                 transform: Transform::from_xyz(
                                     destination.x,
                                     destination.y,
-                                    0.0,
+                                    1.0,
                                 ),
                                 texture: asset_server
                                     .load("ui/move_marker.png"),
                                 ..default()
                             },
+                            RenderLayers::layer(1),
                             MoveIcon {},
                         ));
 

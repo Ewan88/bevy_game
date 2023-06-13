@@ -6,12 +6,15 @@ pub fn setup_camera(
 ) {
     let window = window_query.get_single().unwrap();
 
-    commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(
-            window.width() / 2.0,
-            window.height() / 2.0,
-            0.0,
-        ),
-        ..default()
-    });
+    commands.spawn((
+        Camera2dBundle {
+            transform: Transform::from_xyz(
+                window.width() / 2.0,
+                window.height() / 2.0,
+                999.0,
+            ),
+            ..default()
+        },
+        RenderLayers::from_layers(&[0, 1]),
+    ));
 }

@@ -9,11 +9,14 @@ pub fn spawn_map(mut commands: Commands, tiles: Res<TileTypes>) {
                 y as f32 * TILE_SIZE,
                 0.0,
             );
-            commands.spawn(SpriteBundle {
-                transform,
-                texture: tiles.grass.clone(),
-                ..default()
-            });
+            commands.spawn((
+                SpriteBundle {
+                    transform,
+                    texture: tiles.grass.clone(),
+                    ..default()
+                },
+                RenderLayers::layer(0),
+            ));
         }
     }
 }

@@ -7,6 +7,7 @@ mod settings;
 
 mod prelude {
     pub use bevy::prelude::*;
+    pub use bevy::render::view::RenderLayers;
     pub use bevy::window::*;
     pub const TILE_SIZE: f32 = 32.0;
     pub const X_TILES: f32 = 80.0;
