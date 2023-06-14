@@ -6,12 +6,6 @@ use systems::*;
 use self::resources::DespawnSet;
 use crate::prelude::*;
 
-#[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct MovementSystemSet;
-
-#[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct ConfinementSystemSet;
-
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {

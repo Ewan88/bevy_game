@@ -1,19 +1,13 @@
-use crate::prelude::*;
-
 use super::components::*;
 use super::resources::*;
+use crate::prelude::*;
 
 pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
 pub const PLAYER_SIZE: f32 = 32.0;
 
-pub fn spawn_player(
-    mut commands: Commands,
-    window_query: Query<&Window, With<PrimaryWindow>>,
-    asset_server: Res<AssetServer>,
-) {
-    let window = window_query.get_single().unwrap();
+pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     let transform =
-        Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 1.0);
+        Transform::from_xyz(DISPLAY_WIDTH / 2.0, DISPLAY_HEIGHT / 2.0, 1.0);
     commands.spawn((
         SpriteBundle {
             transform,
@@ -130,14 +124,14 @@ pub fn update_player(
 
 pub fn confine_player_movement(
     mut player_query: Query<&mut Transform, With<Player>>,
-    window_query: Query<&Window, With<PrimaryWindow>>,
 ) {
+    // use the game size to bound the player's movement
+    // not the display size because the camera can move
     if let Ok(mut player_transform) = player_query.get_single_mut() {
-        let window = window_query.get_single().unwrap();
         let x_min = 0.0 + PLAYER_SIZE;
-        let x_max = window.width() - PLAYER_SIZE;
+        let x_max = MAP_WIDTH - PLAYER_SIZE;
         let y_min = 0.0 + PLAYER_SIZE;
-        let y_max = window.height() - PLAYER_SIZE;
+        let y_max = MAP_HEIGHT - PLAYER_SIZE;
 
         let mut translation = player_transform.translation;
 

@@ -1,5 +1,5 @@
 use super::components::*;
-use bevy::{prelude::*, render::view::RenderLayers};
+use crate::prelude::*;
 
 pub fn setup_cursor_icons(
     mut commands: Commands,
@@ -34,7 +34,7 @@ pub fn spawn_menu_cursor(
             ..default()
         },
         GameCursor {},
-        RenderLayers::all()
+        RenderLayers::all(),
     ));
 }
 
