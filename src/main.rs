@@ -23,7 +23,6 @@ mod prelude {
     pub use crate::game::*;
     pub use crate::main_menu::*;
     pub use crate::settings::*;
-    pub use crate::systems::*;
 }
 
 use bevy::window::*;
