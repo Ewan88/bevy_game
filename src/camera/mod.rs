@@ -10,6 +10,7 @@ impl Plugin for CameraPlugin {
             .configure_set(MovementSystemSet.before(ConfinementSystemSet))
             .add_systems((
                 move_camera.in_set(MovementSystemSet),
+                zoom_camera.in_set(MovementSystemSet),
                 bound_camera.in_set(ConfinementSystemSet),
             ));
     }

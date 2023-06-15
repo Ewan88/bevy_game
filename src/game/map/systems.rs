@@ -2,8 +2,8 @@ use super::components::*;
 use crate::prelude::*;
 
 pub fn spawn_map(mut commands: Commands, tiles: Res<TileTypes>) {
-    for y in 0..X_TILES as i32 {
-        for x in 0..Y_TILES as i32 {
+    for y in 0..Y_TILES as i32 {
+        for x in 0..X_TILES as i32 {
             let transform = Transform::from_xyz(
                 x as f32 * TILE_SIZE,
                 y as f32 * TILE_SIZE,

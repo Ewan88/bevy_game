@@ -4,7 +4,6 @@ use crate::camera::systems::GameCamera;
 use crate::prelude::*;
 
 pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
-#[allow(dead_code)]
 pub const PLAYER_SIZE: f32 = 32.0;
 
 pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -126,33 +125,31 @@ pub fn update_player(
     }
 }
 
-#[allow(unused_variables, unused_mut)]
+
 pub fn confine_player_movement(
     mut player_query: Query<&mut Transform, With<Player>>,
 ) {
-    // use the game size to bound the player's movement
-    // not the display size because the camera can move
-    // if let Ok(mut player_transform) = player_query.get_single_mut() {
-    //     let x_min = 0.0 + PLAYER_SIZE;
-    //     let x_max = MAP_WIDTH - PLAYER_SIZE;
-    //     let y_min = 0.0 + PLAYER_SIZE;
-    //     let y_max = MAP_HEIGHT - PLAYER_SIZE;
+    if let Ok(mut player_transform) = player_query.get_single_mut() {
+        let x_min = 0.0;
+        let x_max = MAP_WIDTH - PLAYER_SIZE;
+        let y_min = 0.0;
+        let y_max = MAP_HEIGHT - PLAYER_SIZE;
 
-    //     let mut translation = player_transform.translation;
+        let mut translation = player_transform.translation;
 
-    //     // Bound the x position
-    //     if translation.x < x_min {
-    //         translation.x = x_min;
-    //     } else if translation.x > x_max {
-    //         translation.x = x_max;
-    //     }
-    //     // Bound the y position
-    //     if translation.y < y_min {
-    //         translation.y = y_min;
-    //     } else if translation.y > y_max {
-    //         translation.y = y_max;
-    //     }
+        // Bound the x position
+        if translation.x < x_min {
+            translation.x = x_min;
+        } else if translation.x > x_max {
+            translation.x = x_max;
+        }
+        // Bound the y position
+        if translation.y < y_min {
+            translation.y = y_min;
+        } else if translation.y > y_max {
+            translation.y = y_max;
+        }
 
-    //     player_transform.translation = translation;
-    // }
+        player_transform.translation = translation;
+    }
 }

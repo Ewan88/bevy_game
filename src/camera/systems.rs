@@ -50,4 +50,10 @@ pub fn zoom_camera(
     mouse_wheel: Res<Events<MouseWheel>>,
     mut camera_query: Query<&mut OrthographicProjection, With<GameCamera>>,
 ) {
+    let mut projection = camera_query.single_mut();
+    for event in mouse_wheel.get_reader().iter(&mouse_wheel) {
+        projection.scale *= 1.0 - event.y * 0.2;
+
+        projection.scale = projection.scale.clamp(0.75, 2.0);
+    }
 }
