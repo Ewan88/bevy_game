@@ -34,14 +34,14 @@ pub fn move_camera(
         if mouse_input.pressed(MouseButton::Middle) {
             for event in mouse_motion.get_reader().iter(&mouse_motion) {
                 let delta = Vec3::new(
-                    -MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE
+                    -MOUSE_SENSITIVITY
+                        * MOUSE_SENSITIVITY_SCALE
                         * event.delta.x,
-                    MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE
-                        * event.delta.y,
+                    MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE * event.delta.y,
                     0.0,
-                );  
+                );
                 camera_transform.translation += delta;
-            };
+            }
         }
     }
 }
