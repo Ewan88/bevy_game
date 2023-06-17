@@ -12,7 +12,7 @@ use crate::prelude::*;
 
 const TEXT_COLOR: Color =
     Color::rgb(190.0 / 255.0, 220.0 / 255.0, 127.0 / 255.0);
-const FONT_PATH: &str = "fonts/FiraSans-Bold.ttf";
+const FONT_PATH: &str = "fonts/RubikMaze-Regular.ttf";
 
 pub const NORMAL_BUTTON: Color =
     Color::rgb(17.0 / 255.0, 35.0 / 255.0, 24.0 / 255.0);
