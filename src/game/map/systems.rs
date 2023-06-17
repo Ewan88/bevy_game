@@ -1,12 +1,7 @@
 use super::components::*;
 use crate::prelude::*;
 
-pub fn spawn_map(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    // total tiles = 80 * 50 = 4000
+pub fn spawn_map(mut commands: Commands, tiles: Res<TileTypes>) {
     for y in 0..Y_TILES as i32 {
         for x in 0..X_TILES as i32 {
             let transform = Transform::from_xyz(
@@ -15,15 +10,23 @@ pub fn spawn_map(
                 0.0,
             );
             commands.spawn((
-                PbrBundle {
+                SpriteBundle {
                     transform,
-                    mesh: meshes
-                        .add(shape::Plane::from_size(2.0).into()),
-                    material: materials.add(Color::rgb(0.0, 1.0, 0.0).into()),
+                    texture: tiles.grass.clone(),
                     ..default()
                 },
-                GameMap {},
+                RenderLayers::layer(0),
             ));
         }
     }
+}
+
+pub fn setup_tile_icons(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+) {
+    commands.insert_resource(TileTypes {
+        grass: asset_server.load("sprites/terrain/grass.png"),
+        wall: asset_server.load("sprites/terrain/wall.png"),
+    });
 }

@@ -1,6 +1,3 @@
-use bevy::prelude::shape::Plane;
-use bevy::transform;
-
 use super::components::*;
 use super::resources::*;
 use crate::camera::systems::GameCamera;
@@ -9,24 +6,18 @@ use crate::prelude::*;
 pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
 pub const PLAYER_SIZE: f32 = 32.0;
 
-pub fn spawn_player(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+pub fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let transform =
+        Transform::from_xyz(DISPLAY_WIDTH / 2.0, DISPLAY_HEIGHT / 2.0, 1.0);
     commands.spawn((
-        PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Capsule::default())),
-            material: materials.add(Color::rgb(0.0, 0.0, 1.0).into()),
-            transform: Transform::from_xyz(0.0, 1.0, 0.0),
+        SpriteBundle {
+            transform,
+            texture: asset_server.load("sprites/player/player.png"),
             ..default()
         },
+        RenderLayers::layer(1),
         Player { destination: None },
     ));
-    commands.spawn(PointLightBundle {
-        transform: Transform::from_xyz(3.0, 8.0, 5.0),
-        ..default()
-    });
 }
 
 pub fn despawn_player(
@@ -40,29 +31,48 @@ pub fn despawn_player(
 
 pub fn move_player(
     mut commands: Commands,
+    asset_server: Res<AssetServer>,
     mouse_input: Res<Input<MouseButton>>,
     mut player_query: Query<&mut Player>,
     window: Query<&Window>,
+    mut despawn: ResMut<DespawnSet>,
+    icon_query: Query<Entity, With<MoveIcon>>,
     transform_query: Query<&Transform, With<Player>>,
     camera_query: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
-    //map_query: Query<&Mesh, With<GameMap>>,
 ) {
-    // let Ok(mut player) = player_query.get_single_mut() else { return; };
-    // let Some(cursor_position) = window.single().cursor_position() else { return; };
-    // let (camera, camera_transform) = camera_query.single();
-    // let Ok(transform)  = transform_query.get_single() else { return; };
-    // let Ok
-    // if mouse_input.pressed(MouseButton::Right) {
-    //     let Some(cursor_world_position) = camera.viewport_to_world(
-    //         camera_transform, cursor_position) else { return; };
+    if let Ok(mut player) = player_query.get_single_mut() {
+        let Some(cursor_position) = window.single().cursor_position() else { return; };
+        let (camera, camera_transform) = camera_query.single();
+        if mouse_input.pressed(MouseButton::Right) {
+            if let Ok(entity) = icon_query.get_single() {
+                despawn.0.insert(entity);
+            }
+            let Some(cursor_world_position) = camera.viewport_to_world_2d(
+                camera_transform, cursor_position) else { return; };
 
-    //     if let Ok(transform) = transform_query.get_single() {
-    //             if transform.translation != cursor_world_position.get_point(distance)
-    //             {
-    //                 player.destination = Some(cursor_world_position);
-    //             }
-    //         }
-    //     }
+            if let Ok(transform) = transform_query.get_single() {
+                if transform.translation.x != cursor_world_position.x
+                    || transform.translation.y != cursor_world_position.y
+                {
+                    commands.spawn((
+                        SpriteBundle {
+                            transform: Transform::from_xyz(
+                                cursor_world_position.x,
+                                cursor_world_position.y,
+                                1.0,
+                            ),
+                            texture: asset_server.load("ui/move_marker.png"),
+                            ..default()
+                        },
+                        RenderLayers::layer(1),
+                        MoveIcon {},
+                    ));
+
+                    player.destination = Some(cursor_world_position);
+                }
+            }
+        }
+    }
 }
 
 pub fn update_player(
@@ -114,6 +124,7 @@ pub fn update_player(
         }
     }
 }
+
 
 pub fn confine_player_movement(
     mut player_query: Query<&mut Transform, With<Player>>,
