@@ -49,5 +49,7 @@ fn main() {
         .add_plugin(MainMenuPlugin)
         .add_plugin(CameraPlugin)
         .add_plugin(GamePlugin)
+        .init_resource::<DespawnSet>()
+        .add_system(DespawnSet::apply)
         .run();
 }

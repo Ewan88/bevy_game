@@ -7,6 +7,7 @@ mod ui;
 use crate::prelude::*;
 use systems::*;
 
+use self::enemies::EnemyPlugin;
 use self::map::*;
 use self::player::*;
 
@@ -17,6 +18,7 @@ impl Plugin for GamePlugin {
         app.add_state::<PauseState>()
             .add_plugin(MapPlugin)
             .add_plugin(PlayerPlugin)
+            .add_plugin(EnemyPlugin)
             .add_system(toggle_pause.run_if(in_state(GameState::Game)));
     }
 }

@@ -1,5 +1,4 @@
 use super::components::*;
-use super::resources::*;
 use crate::camera::systems::GameCamera;
 use crate::prelude::*;
 
@@ -124,7 +123,6 @@ pub fn update_player(
         }
     }
 }
-
 
 pub fn confine_player_movement(
     mut player_query: Query<&mut Transform, With<Player>>,
