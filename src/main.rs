@@ -7,7 +7,6 @@ mod settings;
 
 mod prelude {
     pub use bevy::prelude::*;
-    pub use bevy::render::view::RenderLayers;
 
     pub const TILE_SIZE: f32 = 32.0;
     pub const X_TILES: f32 = 80.0;
@@ -21,6 +20,7 @@ mod prelude {
 
     pub use crate::camera::*;
     pub use crate::components::*;
+    pub use crate::cursor::components::*;
     pub use crate::cursor::*;
     pub use crate::game::*;
     pub use crate::main_menu::*;
@@ -32,6 +32,7 @@ use prelude::*;
 
 fn main() {
     App::new()
+        .insert_resource(ClearColor(Color::BLACK))
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Game!".to_string(),

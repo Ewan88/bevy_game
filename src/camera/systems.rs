@@ -1,25 +1,35 @@
-use bevy::input::mouse::*;
+use bevy::{input::mouse::*, render::camera::ScalingMode};
 
 use crate::prelude::*;
 
-const MOUSE_SENSITIVITY: f32 = 1.0;
-const MOUSE_SENSITIVITY_SCALE: f32 = 1.0;
+const MOUSE_SENSITIVITY: f32 = 0.1;
+const MOUSE_SENSITIVITY_SCALE: f32 = 0.2;
 
 #[derive(Component)]
 pub struct GameCamera;
 
 pub fn setup_camera(mut commands: Commands) {
     commands.spawn((
-        Camera2dBundle {
-            transform: Transform::from_xyz(
-                DISPLAY_WIDTH / 2.0,
-                DISPLAY_HEIGHT / 2.0,
-                999.0,
-            ),
+        Camera3dBundle {
+            projection: OrthographicProjection {
+                scale: 3.0,
+                scaling_mode: ScalingMode::FixedVertical(2.0),
+                ..default()
+            }
+            .into(),
+            transform: Transform::from_xyz(5.0, 5.0, 5.0)
+                .looking_at(Vec3::ZERO, Vec3::Y),
+            ..default()
+        },
+        FogSettings {
+            color: Color::rgba(0.1, 0.1, 0.1, 1.0),
+            falloff: FogFalloff::Linear {
+                start: 0.0,
+                end: 20.0,
+            },
             ..default()
         },
         GameCamera,
-        RenderLayers::from_layers(&[0, 1]),
     ));
 }
 
@@ -30,30 +40,27 @@ pub fn move_camera(
     mouse_motion: Res<Events<MouseMotion>>,
     mut camera_query: Query<&mut Transform, With<GameCamera>>,
 ) {
-    if let Ok(mut camera_transform) = camera_query.get_single_mut() {
-        if mouse_input.pressed(MouseButton::Middle) {
-            for event in mouse_motion.get_reader().iter(&mouse_motion) {
-                let delta = Vec3::new(
-                    -MOUSE_SENSITIVITY
-                        * MOUSE_SENSITIVITY_SCALE
-                        * event.delta.x,
-                    MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE * event.delta.y,
-                    0.0,
-                );
-                camera_transform.translation += delta;
-            }
+    let Ok(mut camera_transform) = camera_query.get_single_mut()
+        else { return; };
+    if mouse_input.pressed(MouseButton::Middle) {
+        for event in mouse_motion.get_reader().iter(&mouse_motion) {
+            let delta = Vec3::new(
+                -MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE * event.delta.x,
+                MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE * event.delta.y,
+                0.0,
+            );
+            camera_transform.translation += delta;
         }
     }
 }
 
 pub fn zoom_camera(
     mouse_wheel: Res<Events<MouseWheel>>,
-    mut camera_query: Query<&mut OrthographicProjection, With<GameCamera>>,
+    mut camera_query: Query<&mut Transform, With<GameCamera>>,
 ) {
-    let mut projection = camera_query.single_mut();
+    let mut transform = camera_query.single_mut();
     for event in mouse_wheel.get_reader().iter(&mouse_wheel) {
-        projection.scale *= 1.0 - event.y * 0.2;
-
-        projection.scale = projection.scale.clamp(0.75, 2.0);
+        let zoom = 1.0 - event.y * 0.2;
+        transform.scale *= Vec3::splat(zoom);
     }
 }

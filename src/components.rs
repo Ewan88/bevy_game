@@ -11,7 +11,13 @@ pub enum GameState {
 }
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct MovementSystemSet;
+pub struct EntityMovementSet;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct ConfinementSystemSet;
+pub struct EntityConfinementSet;
+
+#[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
+pub struct CameraMovementSet;
+
+#[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
+pub struct CameraConfinementSet;

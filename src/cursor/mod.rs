@@ -1,4 +1,4 @@
-mod components;
+pub mod components;
 mod systems;
 use self::systems::*;
 use crate::prelude::*;

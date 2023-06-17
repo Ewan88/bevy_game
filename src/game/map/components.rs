@@ -8,3 +8,6 @@ pub struct TileTypes {
     pub grass: Handle<Image>,
     pub wall: Handle<Image>,
 }
+
+#[derive(Component)]
+pub struct GameMap();

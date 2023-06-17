@@ -1,4 +1,3 @@
-use super::components::*;
 use crate::prelude::*;
 
 pub fn setup_cursor_icons(
@@ -34,7 +33,6 @@ pub fn spawn_menu_cursor(
             ..default()
         },
         GameCursor {},
-        RenderLayers::all(),
     ));
 }
 
@@ -53,18 +51,20 @@ pub fn move_cursor(
 
 pub fn update_icon(
     input: Res<Input<MouseButton>>,
-    mut cursor_query: Query<&mut UiImage, With<GameCursor>>,
+    mut cursor_query: Query<(&mut UiImage, &mut Visibility), With<GameCursor>>,
     cursors: Res<Cursors>,
 ) {
-    // need to query for player location
-    // need to query for enemy location
-    if let Ok(mut cursor) = cursor_query.get_single_mut() {
-        if input.pressed(MouseButton::Left) || input.pressed(MouseButton::Right)
-        {
-            cursor.texture = cursors.click.clone();
-        } else {
-            cursor.texture = cursors.point.clone();
-        }
+    let Ok((mut cursor, mut visibility))
+        = cursor_query.get_single_mut() else { return; };
+
+    if input.pressed(MouseButton::Left) || input.pressed(MouseButton::Right) {
+        cursor.texture = cursors.click.clone();
+        *visibility = Visibility::Visible;
+    } else if input.pressed(MouseButton::Middle) {
+        *visibility = Visibility::Hidden;
+    } else {
+        cursor.texture = cursors.point.clone();
+        *visibility = Visibility::Visible;
     }
 }
 
