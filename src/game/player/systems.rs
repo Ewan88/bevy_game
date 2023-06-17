@@ -1,10 +1,13 @@
+use bevy::prelude::shape::Plane;
+use bevy::transform;
+
 use super::components::*;
 use super::resources::*;
 use crate::camera::systems::GameCamera;
 use crate::prelude::*;
 
 pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
-// pub const PLAYER_SIZE: f32 = 32.0;
+pub const PLAYER_SIZE: f32 = 32.0;
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -36,12 +39,12 @@ pub fn despawn_player(
 }
 
 pub fn move_player(
-    // mut commands: Commands,
-    // mouse_input: Res<Input<MouseButton>>,
-    // mut player_query: Query<&mut Player>,
-    // window: Query<&Window>,
-    // transform_query: Query<&Transform, With<Player>>,
-    // camera_query: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
+    mut commands: Commands,
+    mouse_input: Res<Input<MouseButton>>,
+    mut player_query: Query<&mut Player>,
+    window: Query<&Window>,
+    transform_query: Query<&Transform, With<Player>>,
+    camera_query: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
     //map_query: Query<&Mesh, With<GameMap>>,
 ) {
     // let Ok(mut player) = player_query.get_single_mut() else { return; };
@@ -113,29 +116,29 @@ pub fn update_player(
 }
 
 pub fn confine_player_movement(
-    // mut player_query: Query<&mut Transform, With<Player>>,
+    mut player_query: Query<&mut Transform, With<Player>>,
 ) {
-    // if let Ok(mut player_transform) = player_query.get_single_mut() {
-    //     let x_min = 0.0;
-    //     let x_max = MAP_WIDTH - PLAYER_SIZE;
-    //     let y_min = 0.0;
-    //     let y_max = MAP_HEIGHT - PLAYER_SIZE;
+    if let Ok(mut player_transform) = player_query.get_single_mut() {
+        let x_min = 0.0;
+        let x_max = MAP_WIDTH - PLAYER_SIZE;
+        let y_min = 0.0;
+        let y_max = MAP_HEIGHT - PLAYER_SIZE;
 
-    //     let mut translation = player_transform.translation;
+        let mut translation = player_transform.translation;
 
-    //     // Bound the x position
-    //     if translation.x < x_min {
-    //         translation.x = x_min;
-    //     } else if translation.x > x_max {
-    //         translation.x = x_max;
-    //     }
-    //     // Bound the y position
-    //     if translation.y < y_min {
-    //         translation.y = y_min;
-    //     } else if translation.y > y_max {
-    //         translation.y = y_max;
-    //     }
+        // Bound the x position
+        if translation.x < x_min {
+            translation.x = x_min;
+        } else if translation.x > x_max {
+            translation.x = x_max;
+        }
+        // Bound the y position
+        if translation.y < y_min {
+            translation.y = y_min;
+        } else if translation.y > y_max {
+            translation.y = y_max;
+        }
 
-    //     player_transform.translation = translation;
-    // }
+        player_transform.translation = translation;
+    }
 }

@@ -11,7 +11,7 @@ impl Plugin for CameraPlugin {
             .add_systems((
                 move_camera.in_set(CameraMovementSet),
                 zoom_camera.in_set(CameraMovementSet),
-                //bound_camera.in_set(CameraConfinementSet),
+                bound_camera.in_set(CameraConfinementSet),
             ));
     }
 }

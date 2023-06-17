@@ -14,15 +14,10 @@ pub fn setup_camera(mut commands: Commands) {
             projection: OrthographicProjection {
                 scale: 3.0,
                 scaling_mode: ScalingMode::FixedVertical(2.0),
-                near: 0.0,
                 ..default()
             }
             .into(),
-            transform: Transform {
-                translation: Vec3::new(5.0, 5.0, 5.0),
-                scale: Vec3::splat(2.0),
-                ..default()
-            }
+            transform: Transform::from_xyz(5.0, 5.0, 5.0)
                 .looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
@@ -30,13 +25,15 @@ pub fn setup_camera(mut commands: Commands) {
             color: Color::rgba(0.1, 0.1, 0.1, 1.0),
             falloff: FogFalloff::Linear {
                 start: 0.0,
-                end: 100.0,
+                end: 20.0,
             },
             ..default()
         },
         GameCamera,
     ));
 }
+
+pub fn bound_camera() {}
 
 pub fn move_camera(
     mouse_input: Res<Input<MouseButton>>,
@@ -55,16 +52,6 @@ pub fn move_camera(
             camera_transform.translation += delta;
         }
     }
-    if mouse_input.pressed(MouseButton::Right) {
-        for event in mouse_motion.get_reader().iter(&mouse_motion) {
-            let delta = Vec3::new(
-                0.0,
-                0.0,
-                -MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE * event.delta.x,
-            );
-            camera_transform.translation += delta;
-        }
-    }
 }
 
 pub fn zoom_camera(
@@ -75,6 +62,5 @@ pub fn zoom_camera(
     for event in mouse_wheel.get_reader().iter(&mouse_wheel) {
         let zoom = 1.0 - event.y * 0.2;
         transform.scale *= Vec3::splat(zoom);
-        transform.scale = transform.scale.clamp(Vec3::splat(2.0), Vec3::splat(20.0));
     }
 }
