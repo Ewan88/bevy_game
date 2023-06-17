@@ -8,15 +8,13 @@ mod settings;
 mod prelude {
     pub use bevy::prelude::*;
 
-    pub const TILE_SIZE: f32 = 32.0;
-    pub const X_TILES: f32 = 80.0;
-    pub const Y_TILES: f32 = 50.0;
-    // map size in pixels is 2560x1600
-    pub const MAP_WIDTH: f32 = X_TILES * TILE_SIZE;
-    pub const MAP_HEIGHT: f32 = Y_TILES * TILE_SIZE;
-    // display size in pixels is 1280x800
-    pub const DISPLAY_WIDTH: f32 = MAP_WIDTH / 2.0;
-    pub const DISPLAY_HEIGHT: f32 = MAP_HEIGHT / 2.0;
+    // pub const TILE_SIZE: f32 = 32.0;
+    // in 3d space x is left/right, y is up/down, z is forward/backward
+    // pub const X_TILES: f32 = 80.0;
+    // pub const Y_TILES: f32 = 50.0;
+
+    pub const DISPLAY_WIDTH: f32 = 1280.0;
+    pub const DISPLAY_HEIGHT: f32 = 1024.0;
 
     pub use crate::camera::*;
     pub use crate::components::*;
