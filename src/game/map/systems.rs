@@ -18,7 +18,8 @@ pub fn spawn_map(
             commands.spawn((
                 PbrBundle {
                     transform,
-                    mesh: meshes.add(shape::Plane::from_size(TILE_SIZE).into()),
+                    mesh: meshes
+                        .add(shape::Plane::from_size(TILE_SIZE).into()),
                     material: materials.add(Color::rgb(0.0, 1.0, 0.0).into()),
                     ..default()
                 },

@@ -4,7 +4,7 @@ use crate::camera::systems::GameCamera;
 use crate::prelude::*;
 
 pub const PLAYER_SPEED: f32 = 200.0; // TODO: Add acceleration
-                                     // pub const PLAYER_SIZE: f32 = 32.0;
+// pub const PLAYER_SIZE: f32 = 32.0;
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -36,87 +36,84 @@ pub fn despawn_player(
 }
 
 pub fn move_player(
-    mouse_input: Res<Input<MouseButton>>,
-    mut player_query: Query<(&mut Player, &Transform), With<Player>>,
-    window: Query<&Window>,
-    camera_query: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
+    // mut commands: Commands,
+    // mouse_input: Res<Input<MouseButton>>,
+    // mut player_query: Query<&mut Player>,
+    // window: Query<&Window>,
+    // transform_query: Query<&Transform, With<Player>>,
+    // camera_query: Query<(&Camera, &GlobalTransform), With<GameCamera>>,
+    //map_query: Query<&Mesh, With<GameMap>>,
 ) {
-    let Ok(mut player) = player_query.get_single_mut() else {
-        return;
-    };
-    let Some(cursor_position) = window.single().cursor_position() else {
-        return;
-    };
-    let (camera, camera_transform) = camera_query.single();
+    // let Ok(mut player) = player_query.get_single_mut() else { return; };
+    // let Some(cursor_position) = window.single().cursor_position() else { return; };
+    // let (camera, camera_transform) = camera_query.single();
+    // let Ok(transform)  = transform_query.get_single() else { return; };
+    // let Ok
+    // if mouse_input.pressed(MouseButton::Right) {
+    //     let Some(cursor_world_position) = camera.viewport_to_world(
+    //         camera_transform, cursor_position) else { return; };
 
-    if mouse_input.just_pressed(MouseButton::Right) {
-        let Some(cursor_world_position) = camera.viewport_to_world(
-            camera_transform, cursor_position) else {
-                return;
-            };
-
-        let destination: Vec3 = Vec3::new(
-            cursor_world_position.origin.x - 100.0,
-            cursor_world_position.origin.y - 100.0,
-            cursor_world_position.origin.z - 100.0,
-        );
-        player.0.destination = Some(destination);
-        println!("Destination: {:?}", destination);
-    }
+    //     if let Ok(transform) = transform_query.get_single() {
+    //             if transform.translation != cursor_world_position.get_point(distance)
+    //             {
+    //                 player.destination = Some(cursor_world_position);
+    //             }
+    //         }
+    //     }
 }
 
 pub fn update_player(
-    mut player_query: Query<(&mut Player, &mut Transform), With<Player>>,
+    mut transform_query: Query<&mut Transform, With<Player>>,
+    mut player_query: Query<&mut Player>,
     time: Res<Time>,
+    mut despawn: ResMut<DespawnSet>,
+    icon_query: Query<Entity, With<MoveIcon>>,
 ) {
-    let Ok(mut player) = player_query.get_single_mut() else {
-        return;
-    };
+    if let Ok(mut transform) = transform_query.get_single_mut() {
+        if let Ok(mut player) = player_query.get_single_mut() {
+            match player.destination {
+                None => {}
+                Some(destination) => {
+                    let dest_x = destination.x;
+                    let dest_y = destination.y;
 
-    match player.0.destination {
-        None => {}
-        Some(destination) => {
-            let dest_x = destination.x;
-            let dest_y = destination.y;
-            let dest_z = destination.z;
+                    let mut translation = transform.translation;
+                    let trans_x = translation.x;
+                    let trans_y = translation.y;
 
-            let mut translation = player.1.translation;
-            let trans_x = translation.x;
-            let trans_y = translation.y;
-            let trans_z = translation.z;
+                    if trans_x == dest_x && trans_y == dest_y {
+                        if let Ok(entity) = icon_query.get_single() {
+                            despawn.0.insert(entity);
+                        }
+                        player.destination = None;
+                    }
 
-            if trans_x == dest_x && trans_y == dest_y && trans_z == dest_z {
-                player.0.destination = None;
-            }
+                    let direction =
+                        Vec3::new(dest_x - trans_x, dest_y - trans_y, 0.0);
+                    let distance = direction.length();
 
-            let direction = Vec3::new(
-                dest_x - trans_x,
-                dest_y - trans_y,
-                dest_z - trans_z,
-            );
-            let distance = direction.length();
+                    if distance > 0.0 {
+                        let speed = PLAYER_SPEED * time.delta_seconds();
+                        let movement = direction.normalize() * speed;
 
-            if distance > 0.0 {
-                let speed = PLAYER_SPEED * time.delta_seconds();
-                let movement = direction.normalize() * speed;
+                        if distance <= speed {
+                            translation.x = dest_x;
+                            translation.y = dest_y;
+                        } else {
+                            translation.x += movement.x;
+                            translation.y += movement.y;
+                        }
 
-                if distance <= speed {
-                    translation.x = dest_x;
-                    translation.y = dest_y;
-                    translation.z = dest_z;
-                } else {
-                    translation.x += movement.x;
-                    translation.y += movement.y;
-                    translation.z += movement.z;
+                        transform.translation = translation;
+                    }
                 }
-
-                player.1.translation = translation;
             }
         }
     }
 }
 
-pub fn confine_player_movement(// mut player_query: Query<&mut Transform, With<Player>>,
+pub fn confine_player_movement(
+    // mut player_query: Query<&mut Transform, With<Player>>,
 ) {
     // if let Ok(mut player_transform) = player_query.get_single_mut() {
     //     let x_min = 0.0;

@@ -1,5 +1,5 @@
 mod enemies;
-pub(crate) mod map;
+mod map;
 mod player;
 mod systems;
 mod ui;
