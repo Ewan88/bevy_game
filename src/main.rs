@@ -20,6 +20,7 @@ mod prelude {
     pub use crate::components::*;
     pub use crate::cursor::components::*;
     pub use crate::cursor::*;
+    pub use crate::game::map::components::*;
     pub use crate::game::*;
     pub use crate::main_menu::*;
     pub use crate::settings::*;

@@ -2,7 +2,7 @@ use crate::prelude::*;
 
 #[derive(Component)]
 pub struct Player {
-    pub destination: Option<Vec2>,
+    pub destination: Option<Vec3>,
 }
 
 #[derive(Component, PartialEq, Eq, Hash)]

@@ -19,18 +19,18 @@ pub fn setup_camera(mut commands: Commands) {
             }
             .into(),
             transform: Transform {
-                translation: Vec3::new(5.0, 5.0, 5.0),
+                translation: Vec3::new(100.0, 100.0, 100.0),
                 scale: Vec3::splat(2.0),
                 ..default()
             }
-                .looking_at(Vec3::ZERO, Vec3::Y),
+            .looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
         FogSettings {
             color: Color::rgba(0.1, 0.1, 0.1, 1.0),
             falloff: FogFalloff::Linear {
-                start: 0.0,
-                end: 100.0,
+                start: 100.0,
+                end: 200.0,
             },
             ..default()
         },
@@ -55,16 +55,6 @@ pub fn move_camera(
             camera_transform.translation += delta;
         }
     }
-    if mouse_input.pressed(MouseButton::Right) {
-        for event in mouse_motion.get_reader().iter(&mouse_motion) {
-            let delta = Vec3::new(
-                0.0,
-                0.0,
-                -MOUSE_SENSITIVITY * MOUSE_SENSITIVITY_SCALE * event.delta.x,
-            );
-            camera_transform.translation += delta;
-        }
-    }
 }
 
 pub fn zoom_camera(
@@ -75,6 +65,7 @@ pub fn zoom_camera(
     for event in mouse_wheel.get_reader().iter(&mouse_wheel) {
         let zoom = 1.0 - event.y * 0.2;
         transform.scale *= Vec3::splat(zoom);
-        transform.scale = transform.scale.clamp(Vec3::splat(2.0), Vec3::splat(20.0));
+        transform.scale =
+            transform.scale.clamp(Vec3::splat(2.0), Vec3::splat(20.0));
     }
 }
