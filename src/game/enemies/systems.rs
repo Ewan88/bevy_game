@@ -20,7 +20,7 @@ pub fn spawn_enemy(mut commands: Commands, enemies: Res<EnemyTypes>) {
     commands.spawn((
         SpriteBundle {
             transform,
-            texture: enemies.enemy.clone().into(),
+            texture: enemies.enemy.clone(),
             ..default()
         },
         RenderLayers::layer(1),

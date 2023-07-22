@@ -5,7 +5,7 @@ use bevy::app::*;
 use bevy::audio::Volume;
 
 pub fn interact_with_new_game_button(
-    mut commands: Commands,
+    commands: Commands,
     mut button_query: Query<
         (&Interaction, &mut BackgroundColor),
         (Changed<Interaction>, With<NewGameButton>),
@@ -34,7 +34,7 @@ pub fn interact_with_new_game_button(
 }
 
 pub fn interact_with_settings_button(
-    mut commands: Commands,
+    commands: Commands,
     mut button_query: Query<
         (&Interaction, &mut BackgroundColor),
         (Changed<Interaction>, With<SettingsButton>),
@@ -62,7 +62,7 @@ pub fn interact_with_settings_button(
 }
 
 pub fn interact_with_quit_button(
-    mut commands: Commands,
+    commands: Commands,
     mut event_writer: EventWriter<AppExit>,
     mut button_query: Query<
         (&Interaction, &mut BackgroundColor),
