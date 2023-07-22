@@ -17,7 +17,6 @@ pub const BACKGROUND: Color =
 pub const MAIN_MENU_STYLE: Style = {
     let mut style = Style::DEFAULT;
     style.width = Val::Percent(100.);
-    style.height = Val::Percent(100.);
     style.align_items = AlignItems::Center;
     style.justify_content = JustifyContent::Center;
     style.flex_direction = FlexDirection::Column;
@@ -28,7 +27,7 @@ pub const MAIN_MENU_STYLE: Style = {
 
 pub const BUTTON_STYLE: Style = {
     let mut style = Style::DEFAULT;
-    style.width = Val::Percent(250.);
+    style.width = Val::Percent(80.);
     style.height = Val::Percent(65.);
     style.margin = UiRect::all(Val::Px(20.0));
     style.justify_content = JustifyContent::Center;

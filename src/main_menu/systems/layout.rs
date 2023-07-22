@@ -34,6 +34,7 @@ pub fn build_main_menu(
                         // BACKGROUND
                         flex_direction: FlexDirection::Column,
                         align_items: AlignItems::Center,
+                        width: Val::Px(400.),
                         ..default()
                     },
                     background_color: BACKGROUND.into(),
