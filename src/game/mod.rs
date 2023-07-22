@@ -16,14 +16,17 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<PauseState>()
-            .add_plugin(MapPlugin)
-            .add_plugin(PlayerPlugin)
-            .add_plugin(EnemyPlugin)
-            .add_system(toggle_pause.run_if(in_state(GameState::Game)));
+            .add_plugins((MapPlugin, PlayerPlugin, EnemyPlugin))
+            .add_systems(
+                Update,
+                toggle_pause.run_if(in_state(GameState::Game)),
+            );
     }
 }
 
-#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
+#[derive(
+    SystemSet, States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default,
+)]
 pub enum PauseState {
     #[default]
     Running,

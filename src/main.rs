@@ -32,24 +32,26 @@ use prelude::*;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                title: "Game!".to_string(),
-                mode: WindowMode::Windowed,
-                resolution: WindowResolution::new(
-                    DISPLAY_WIDTH,
-                    DISPLAY_HEIGHT,
-                ),
+        .add_plugins((
+            DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    title: "Game!".to_string(),
+                    mode: WindowMode::Windowed,
+                    resolution: WindowResolution::new(
+                        DISPLAY_WIDTH,
+                        DISPLAY_HEIGHT,
+                    ),
+                    ..default()
+                }),
                 ..default()
             }),
-            ..default()
-        }))
+            CursorPlugin,
+            MainMenuPlugin,
+            CameraPlugin,
+            GamePlugin,
+        ))
         .add_state::<GameState>()
-        .add_plugin(CursorPlugin)
-        .add_plugin(MainMenuPlugin)
-        .add_plugin(CameraPlugin)
-        .add_plugin(GamePlugin)
         .init_resource::<DespawnSet>()
-        .add_system(DespawnSet::apply)
+        .add_systems(Update, DespawnSet::apply)
         .run();
 }

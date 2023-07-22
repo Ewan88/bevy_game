@@ -14,11 +14,11 @@ pub fn toggle_pause(
     mut next_state: ResMut<NextState<PauseState>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        if pause_state.0 == PauseState::Running {
+        if *pause_state.get() == PauseState::Running {
             next_state.set(PauseState::Paused);
             println!("game paused")
         }
-        if pause_state.0 == PauseState::Paused {
+        if *pause_state.get() == PauseState::Paused {
             next_state.set(PauseState::Running);
             println!("game resumed")
         }

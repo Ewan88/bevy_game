@@ -13,18 +13,16 @@ pub struct MainMenuPlugin;
 
 impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(
-            spawn_main_menu.in_schedule(OnEnter(GameState::MainMenu)),
-        )
-        .add_systems(
-            (
-                interact_with_new_game_button,
-                interact_with_quit_button,
-                interact_with_settings_button,
+        app.add_systems(OnEnter(GameState::MainMenu), spawn_main_menu)
+            .add_systems(
+                Update,
+                (
+                    interact_with_new_game_button,
+                    interact_with_quit_button,
+                    interact_with_settings_button,
+                ),
             )
-                .in_set(OnUpdate(GameState::MainMenu)),
-        )
-        .add_system(despawn_main_menu.in_schedule(OnExit(GameState::MainMenu)));
+            .add_systems(OnExit(GameState::MainMenu), despawn_main_menu);
     }
 }
 

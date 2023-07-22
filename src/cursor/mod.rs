@@ -7,11 +7,8 @@ pub struct CursorPlugin;
 
 impl Plugin for CursorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_startup_system(setup_cursor_icons)
-            .add_system(
-                spawn_menu_cursor.in_schedule(OnEnter(GameState::MainMenu)),
-            )
-            .add_system(update_icon)
-            .add_system(move_cursor);
+        app.add_systems(Startup, setup_cursor_icons)
+            .add_systems(OnEnter(GameState::MainMenu), spawn_menu_cursor)
+            .add_systems(Update, (update_icon, move_cursor));
     }
 }

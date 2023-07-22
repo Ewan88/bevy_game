@@ -14,21 +14,26 @@ pub const PRESSED_BUTTON: Color =
 pub const BACKGROUND: Color =
     Color::rgb(4.0 / 255.0, 12.0 / 255.0, 6.0 / 255.0);
 
-pub const MAIN_MENU_STYLE: Style = Style {
-    size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
-    align_items: AlignItems::Center,
-    justify_content: JustifyContent::Center,
-    flex_direction: FlexDirection::Column,
-    gap: Size::new(Val::Px(8.0), Val::Px(8.0)),
-    ..Style::DEFAULT
+pub const MAIN_MENU_STYLE: Style = {
+    let mut style = Style::DEFAULT;
+    style.width = Val::Percent(100.);
+    style.height = Val::Percent(100.);
+    style.align_items = AlignItems::Center;
+    style.justify_content = JustifyContent::Center;
+    style.flex_direction = FlexDirection::Column;
+    style.row_gap = Val::Px(8.);
+    style.column_gap = Val::Px(8.);
+    style
 };
 
-pub const BUTTON_STYLE: Style = Style {
-    size: Size::new(Val::Px(250.0), Val::Px(65.0)),
-    margin: UiRect::all(Val::Px(20.0)),
-    justify_content: JustifyContent::Center,
-    align_items: AlignItems::Center,
-    ..Style::DEFAULT
+pub const BUTTON_STYLE: Style = {
+    let mut style = Style::DEFAULT;
+    style.width = Val::Percent(250.);
+    style.height = Val::Percent(65.);
+    style.margin = UiRect::all(Val::Px(20.0));
+    style.justify_content = JustifyContent::Center;
+    style.align_items = AlignItems::Center;
+    style
 };
 
 pub fn get_title_text_style(asset_server: &Res<AssetServer>) -> TextStyle {
