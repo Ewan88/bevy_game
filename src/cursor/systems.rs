@@ -25,8 +25,6 @@ pub fn spawn_menu_cursor(
             image: cursors.point.clone().into(),
             style: Style {
                 position_type: PositionType::Absolute,
-                left: Val::Px(24.),
-                right: Val::Px(24.),
                 ..default()
             },
             z_index: ZIndex::Global(999),
@@ -45,8 +43,8 @@ pub fn move_cursor(
     let window: &Window = window.single();
     if let Some(position) = window.cursor_position() {
         if let Ok(mut style) = cursor.get_single_mut() {
-            style.left = Val::Px(position.x - 2.0);
-            style.bottom = Val::Px(position.y - 24.0);
+            style.left = Val::Px(position.x);
+            style.top = Val::Px(position.y);
         }
     }
 }
